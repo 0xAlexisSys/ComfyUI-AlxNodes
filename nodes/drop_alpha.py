@@ -19,9 +19,8 @@ class DropAlpha(io.ComfyNode):
             search_aliases=[
                 "alpha",
                 "rgb",
+                "rgba",
                 "remove alpha",
-                "drop alpha",
-                "channels",
             ],
             inputs=[
                 io.Image.Input("image"),
@@ -39,6 +38,3 @@ class DropAlpha(io.ComfyNode):
         # Keep R, G, B (and any channel before a trailing alpha); drop the tail.
         output = image[..., :3].clone().to(torch.float32)
         return io.NodeOutput(output)
-
-
-__all__ = ["DropAlpha"]
