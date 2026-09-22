@@ -19,9 +19,8 @@ class DropAlpha(io.ComfyNode):
             search_aliases=[
                 "alpha",
                 "rgb",
+                "rgba",
                 "remove alpha",
-                "drop alpha",
-                "channels",
             ],
             inputs=[
                 io.Image.Input("image"),
