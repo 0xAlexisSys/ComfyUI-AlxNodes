@@ -45,10 +45,10 @@ class EmptyLatentImageQoL(io.ComfyNode):
                 ),
                 io.Int.Input(  # HACK: ComfyUI has no Python-native way to add buttons. It's ugly but it works.
                     id="flip",
+                    tooltip="If set to 1, width and height are flipped.",
                     min=0,
                     max=1,
                     default=0,
-                    tooltip="If set to 1, width and height are flipped.",
                 ),
             ],
         )] + [io.DynamicCombo.Option(label, []) for label, _, _ in RESOLUTION_PRESETS]
@@ -73,10 +73,10 @@ class EmptyLatentImageQoL(io.ComfyNode):
                 ),
                 io.Int.Input(
                     id="batch_size",
+                    tooltip="The number of latent images in the batch.",
                     min=1,
                     max=4096,
                     default=1,
-                    tooltip="The number of latent images in the batch.",
                 ),
             ],
             outputs=[

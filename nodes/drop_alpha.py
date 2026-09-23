@@ -1,7 +1,6 @@
 import torch
 
-from typing_extensions import override
-from comfy_api.latest import ComfyExtension, io
+from comfy_api.latest import io
 
 
 class DropAlpha(io.ComfyNode):
