@@ -77,12 +77,9 @@ class EmptyLatentImageQoL(io.ComfyNode):
                     id="preset",
                     options=preset_options,
                 ),
-                io.Int.Input(  # HACK: ComfyUI has no Python-native way to add buttons. It's ugly but it works.
-                    id="flip",
-                    tooltip="If set to 1, width and height are flipped.",
-                    min=0,
-                    max=1,
-                    default=0,
+                io.Boolean.Input(
+                    id="swap_resolution",
+                    tooltip="If true, width and height are swapped.",
                 ),
                 io.Int.Input(
                     id="batch_size",
@@ -98,7 +95,7 @@ class EmptyLatentImageQoL(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, ltype: str, preset: dict[str, str | int], flip: int, batch_size: int) -> io.NodeOutput:
+    def execute(cls, ltype: str, preset: dict[str, str | int], swap_resolution: bool, batch_size: int) -> io.NodeOutput:
         selected_preset = preset["preset"]
         if selected_preset == _RESOLUTION_PRESET_CUSTOM:
             width, height = preset["width"], preset["height"]
@@ -108,7 +105,7 @@ class EmptyLatentImageQoL(io.ComfyNode):
                     width, height = preset_width, preset_height
                     break
 
-        if flip == 1:
+        if swap_resolution:
             height, width = width, height
 
         # Some latent types don't specify dtype. This is intentional as they mirror ComfyUI's

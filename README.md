@@ -24,15 +24,15 @@ Strips the alpha channel (if available) from an input image and outputs the RGB 
 
 ### Empty Latent Image QoL
 
-|        |                       |
-| ------ |-----------------------|
-| Input  | `type` - Combo        |
-| Input  | `preset` - Combo      |
-| Input  | `width` - Integer     |
-| Input  | `height` - Integer    |
-| Input  | `flip` - Integer      |
-| Input  | `batch_size` - Height |
-| Output | `LATENT` - Latent     |
+|        |                             |
+| ------ |-----------------------------|
+| Input  | `type` - Combo              |
+| Input  | `preset` - Combo            |
+| Input  | `width` - Integer           |
+| Input  | `height` - Integer          |
+| Input  | `swap_resolution` - Boolean |
+| Input  | `batch_size` - Height       |
+| Output | `LATENT` - Latent           |
 
 Same as the Empty Latent Image node, but with quality-of-life additions. `width` and `height` are exposed if `preset` is set to `custom`.
 
