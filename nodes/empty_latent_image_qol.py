@@ -4,7 +4,7 @@ from comfy_api.latest import io
 from comfy.model_management import intermediate_device, intermediate_dtype
 
 
-RESOLUTION_PRESETS: list[tuple[str, int, int]] = [
+_RESOLUTION_PRESETS: list[tuple[str, int, int]] = [
     ("512 x 512", 512, 512),
     ("768 x 768", 768, 768),
     ("1024 x 1024", 1024, 1024),
@@ -18,8 +18,8 @@ RESOLUTION_PRESETS: list[tuple[str, int, int]] = [
     ("1536 x 864", 1536, 864),
     ("1920 x 1080", 1920, 1080),
 ]
-RESOLUTION_PRESET_CUSTOM: str = "custom"
-RESOLUTION_INPUT_KWARGS: dict[str, int] = {
+_RESOLUTION_PRESET_CUSTOM: str = "custom"
+_RESOLUTION_INPUT_KWARGS: dict[str, int] = {
     "min": 16,
     "max": 16384,
     "default": 1024,
@@ -31,20 +31,20 @@ class EmptyLatentImageQoL(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:
         preset_options: list[io.DynamicCombo.Option] = [io.DynamicCombo.Option(
-            RESOLUTION_PRESET_CUSTOM,
+            _RESOLUTION_PRESET_CUSTOM,
             [
                 io.Int.Input(
                     id="width",
                     tooltip="The width of the latent images in pixels.",
-                    **RESOLUTION_INPUT_KWARGS,
+                    **_RESOLUTION_INPUT_KWARGS,
                 ),
                 io.Int.Input(
                     id="height",
                     tooltip="The height of the latent images in pixels.",
-                    **RESOLUTION_INPUT_KWARGS,
+                    **_RESOLUTION_INPUT_KWARGS,
                 ),
             ],
-        )] + [io.DynamicCombo.Option(label, []) for label, _, _ in RESOLUTION_PRESETS]
+        )] + [io.DynamicCombo.Option(label, []) for label, _, _ in _RESOLUTION_PRESETS]
 
         return io.Schema(
             node_id="EmptyLatentImageQoL",
@@ -87,10 +87,10 @@ class EmptyLatentImageQoL(io.ComfyNode):
     @classmethod
     def execute(cls, preset: dict[str, str | int], flip: int, batch_size: int) -> io.NodeOutput:
         selected_preset = preset["preset"]
-        if selected_preset == RESOLUTION_PRESET_CUSTOM:
+        if selected_preset == _RESOLUTION_PRESET_CUSTOM:
             width, height = preset["width"], preset["height"]
         else:
-            for label, preset_width, preset_height in RESOLUTION_PRESETS:
+            for label, preset_width, preset_height in _RESOLUTION_PRESETS:
                 if label == selected_preset:
                     width, height = preset_width, preset_height
                     break
