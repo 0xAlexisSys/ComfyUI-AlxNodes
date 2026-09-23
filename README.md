@@ -33,4 +33,4 @@ Strips the alpha channel (if available) from an input image and outputs the RGB 
 | Input  | `batch_size` - Height |
 | Output | `LATENT` - Latent     |
 
-Same as the Empty Latent Image node, but with quality-of-life additions. `width`, `height`, and `flip` are exposed if `preset` is set to `custom`.
+Same as the Empty Latent Image node, but with quality-of-life additions. `width` and `height` are exposed if `preset` is set to `custom`.
