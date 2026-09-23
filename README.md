@@ -34,3 +34,18 @@ Strips the alpha channel (if available) from an input image and outputs the RGB 
 | Output | `LATENT` - Latent     |
 
 Same as the Empty Latent Image node, but with quality-of-life additions. `width` and `height` are exposed if `preset` is set to `custom`.
+
+### Wildcard Text
+
+|        |                   |
+| ------ | ----------------- |
+| Input  | `seed` - Integer  |
+| Output | `STRING` - String |
+
+Supports `{red|green|blue}`, `<id:a|b>`, `<id:link_id:a|b>`, and escaping special characters with a backslash. Named wildcards are invoked with `{{id}}`.
+
+Named link wildcards must have the same item count as the one they are linking to. e.g., `<color:r|g|b>` with `<color:color_link:r|g|b|a>` will fail. Example named wildcard usage, both non-linked and linked:
+
+```plaintext
+<p:man|woman><p:p_pronoun1:he|she><p:p_pronoun2:his|her>A {{p}} standing in an alley. {{p_pronoun1}} is smiling at the viewer, {{p_pronoun2}} cheeks flushed.
+```

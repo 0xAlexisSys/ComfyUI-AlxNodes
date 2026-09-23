@@ -9,6 +9,7 @@ class AlxNodesExtension(ComfyExtension):
         return [
             DropAlpha,
             EmptyLatentImageQoL,
+            WildcardText,
         ]
 
 
