@@ -25,7 +25,8 @@ Strips the alpha channel (if available) from an input image and outputs the RGB 
 ### Empty Latent Image QoL
 
 |        |                       |
-| ------ | --------------------- |
+| ------ |-----------------------|
+| Input  | `type` - Combo        |
 | Input  | `preset` - Combo      |
 | Input  | `width` - Integer     |
 | Input  | `height` - Integer    |
