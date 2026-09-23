@@ -31,5 +31,5 @@ class DropAlpha(io.ComfyNode):
             return image
 
         # Keep R, G, B (and any channel before a trailing alpha); drop the tail.
-        output = image[..., :3].clone().to(torch.float32)
-        return io.NodeOutput(output)
+        final_image: torch.Tensor = image[..., :3].clone().to(torch.float32)
+        return io.NodeOutput(final_image)
