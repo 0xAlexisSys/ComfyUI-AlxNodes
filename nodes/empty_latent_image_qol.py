@@ -5,18 +5,14 @@ from comfy.model_management import intermediate_device, intermediate_dtype
 
 
 RESOLUTION_PRESETS: list[tuple[str, int, int]] = [
-    ("512 x 512 (square)", 512, 512),
-    ("768 x 768 (square)", 768, 768),
-    ("1024 x 1024 (square)", 1024, 1024),
-    ("1536 x 1536 (square)", 1536, 1536),
-    ("896 x 512 (landscape)", 896, 512),
-    ("1280 x 720 (landscape)", 1280, 720),
-    ("1216 x 832 (landscape)", 1216, 832),
-    ("1536 x 864 (landscape)", 1536, 864),
-    ("512 x 896 (portrait)", 512, 896),
-    ("720 x 1280 (portrait)", 720, 1280),
-    ("832 x 1216 (portrait)", 832, 1216),
-    ("864 x 1536 (portrait)", 864, 1536),
+    ("512 x 512", 512, 512),
+    ("768 x 768", 768, 768),
+    ("1024 x 1024", 1024, 1024),
+    ("1536 x 1536", 1536, 1536),
+    ("896 x 512", 896, 512),
+    ("1280 x 720", 1280, 720),
+    ("1216 x 832", 1216, 832),
+    ("1536 x 864", 1536, 864),
 ]
 RESOLUTION_PRESET_CUSTOM: str = "custom"
 RESOLUTION_INPUT_KWARGS: dict[str, int] = {
@@ -43,13 +39,6 @@ class EmptyLatentImageQoL(io.ComfyNode):
                     tooltip="The height of the latent images in pixels.",
                     **RESOLUTION_INPUT_KWARGS,
                 ),
-                io.Int.Input(  # HACK: ComfyUI has no Python-native way to add buttons. It's ugly but it works.
-                    id="flip",
-                    tooltip="If set to 1, width and height are flipped.",
-                    min=0,
-                    max=1,
-                    default=0,
-                ),
             ],
         )] + [io.DynamicCombo.Option(label, []) for label, _, _ in RESOLUTION_PRESETS]
 
@@ -71,6 +60,13 @@ class EmptyLatentImageQoL(io.ComfyNode):
                     id="preset",
                     options=preset_options,
                 ),
+                io.Int.Input(  # HACK: ComfyUI has no Python-native way to add buttons. It's ugly but it works.
+                    id="flip",
+                    tooltip="If set to 1, width and height are flipped.",
+                    min=0,
+                    max=1,
+                    default=0,
+                ),
                 io.Int.Input(
                     id="batch_size",
                     tooltip="The number of latent images in the batch.",
@@ -85,18 +81,18 @@ class EmptyLatentImageQoL(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, preset: dict[str, str | int], batch_size: int) -> io.NodeOutput:
+    def execute(cls, preset: dict[str, str | int], flip: int, batch_size: int) -> io.NodeOutput:
         selected_preset = preset["preset"]
-
         if selected_preset == RESOLUTION_PRESET_CUSTOM:
             width, height = preset["width"], preset["height"]
-            if preset["flip"] == 1:
-                height, width = width, height
         else:
             for label, preset_width, preset_height in RESOLUTION_PRESETS:
                 if label == selected_preset:
                     width, height = preset_width, preset_height
                     break
+
+        if flip == 1:
+            height, width = width, height
 
         latent: torch.Tensor = torch.zeros(
             [batch_size, 4, height // 8, width // 8],
