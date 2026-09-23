@@ -30,8 +30,7 @@ RESOLUTION_INPUT_KWARGS: dict[str, int] = {
 class EmptyLatentImageQoL(io.ComfyNode):
     @classmethod
     def define_schema(cls) -> io.Schema:
-        preset_options: list[io.DynamicCombo.Option] = [io.DynamicCombo.Option(label, []) for label, _, _ in RESOLUTION_PRESETS]
-        preset_options.append(io.DynamicCombo.Option(
+        preset_options: list[io.DynamicCombo.Option] = [io.DynamicCombo.Option(
             RESOLUTION_PRESET_CUSTOM,
             [
                 io.Int.Input(
@@ -52,7 +51,7 @@ class EmptyLatentImageQoL(io.ComfyNode):
                     tooltip="If set to 1, width and height are flipped.",
                 ),
             ],
-        ))
+        )] + [io.DynamicCombo.Option(label, []) for label, _, _ in RESOLUTION_PRESETS]
 
         return io.Schema(
             node_id="EmptyLatentImageQoL",
