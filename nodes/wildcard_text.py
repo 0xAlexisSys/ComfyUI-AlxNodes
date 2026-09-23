@@ -102,7 +102,10 @@ class WildcardText(io.ComfyNode):
             return ""
 
         def named_wildcard_pattern_callback(match: re.Match) -> str:
-            return named_wildcard_selected_values[match.group("id")]  # type: ignore
+            id: str = match.group("id")
+            if id not in named_wildcard_selected_values:
+                raise KeyError(f"'{id}' does not exist")
+            return named_wildcard_selected_values[id]
 
         def wildcard_pattern_callback(match: re.Match) -> str:
             values: list[str] = [value for value in match.group("values").split("|")]
