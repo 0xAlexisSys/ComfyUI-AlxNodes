@@ -1,6 +1,7 @@
 import random
 import re
 
+from typing import Optional
 from comfy_api.latest import io
 
 
@@ -78,7 +79,7 @@ class WildcardText(io.ComfyNode):
                 return match.group()
 
             id: str = match.group("id")
-            link_id: str | None = match.group("link_id")
+            link_id: Optional[str] = match.group("link_id")
             if link_id is None:
                 if id in named_wildcard_values:
                     raise KeyError(f"'{id}' already exists")

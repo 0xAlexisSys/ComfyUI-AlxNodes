@@ -61,7 +61,7 @@ class EmptyLatentImageQoL(io.ComfyNode):
             ],
             inputs=[
                 io.Combo.Input(
-                    id="ltype",
+                    id="latent_type",
                     display_name="type",
                     tooltip="The type of the latent images.",
                     options=[
@@ -95,22 +95,27 @@ class EmptyLatentImageQoL(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, ltype: str, preset: dict[str, str | int], swap_resolution: bool, batch_size: int) -> io.NodeOutput:
-        selected_preset = preset["preset"]
+    def execute(cls, latent_type: str, preset: dict[str, str | int], swap_resolution: bool, batch_size: int) -> io.NodeOutput:
+        width: int = 1024
+        height: int = 1024
+
+        selected_preset: str = preset["preset"]  # type: ignore
         if selected_preset == _RESOLUTION_PRESET_CUSTOM:
-            width, height = preset["width"], preset["height"]
+            width = preset["width"]  # type: ignore
+            height = preset["height"]  # type: ignore
         else:
             for label, preset_width, preset_height in _RESOLUTION_PRESETS:
                 if label == selected_preset:
-                    width, height = preset_width, preset_height
+                    width = preset_width
+                    height = preset_height
                     break
 
         if swap_resolution:
-            height, width = width, height
+            width, height = height, width
 
         # Some latent types don't specify dtype. This is intentional as they mirror ComfyUI's
         # model-specific empty latent image nodes.
-        match ltype:
+        match latent_type:
             case "default":
                 return io.NodeOutput({
                     "samples": torch.zeros((batch_size, 4, height // 8, width // 8), device=intermediate_device(), dtype=intermediate_dtype()),  # type: ignore
@@ -137,4 +142,4 @@ class EmptyLatentImageQoL(io.ComfyNode):
                     "samples": torch.zeros((batch_size, 3, height, width), device=intermediate_device()),
                 })
             case _:
-                raise ValueError(f"Unknown latent type '{ltype}'")
+                raise ValueError(f"Unknown latent type '{latent_type}'")
