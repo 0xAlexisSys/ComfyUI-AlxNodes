@@ -60,6 +60,19 @@ class EmptyLatentImageQoL(io.ComfyNode):
                 "blank",
             ],
             inputs=[
+                io.Combo.Input(
+                    id="ltype",
+                    display_name="type",
+                    tooltip="The type of the latent images.",
+                    options=[
+                        "default",
+                        "sd3",
+                        "chroma_radiance",
+                        "hunyuan_image",
+                        "flux2",
+                        "hidream_o1",
+                    ],
+                ),
                 io.DynamicCombo.Input(
                     id="preset",
                     options=preset_options,
@@ -85,7 +98,7 @@ class EmptyLatentImageQoL(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, preset: dict[str, str | int], flip: int, batch_size: int) -> io.NodeOutput:
+    def execute(cls, ltype: str, preset: dict[str, str | int], flip: int, batch_size: int) -> io.NodeOutput:
         selected_preset = preset["preset"]
         if selected_preset == _RESOLUTION_PRESET_CUSTOM:
             width, height = preset["width"], preset["height"]
@@ -98,12 +111,33 @@ class EmptyLatentImageQoL(io.ComfyNode):
         if flip == 1:
             height, width = width, height
 
-        latent: torch.Tensor = torch.zeros(
-            [batch_size, 4, height // 8, width // 8],
-            device=intermediate_device(),
-            dtype=intermediate_dtype(),
-        )
-        return io.NodeOutput({
-            "samples": latent,
-            "downscale_ratio_spacial": 8,
-        })
+        # Some latent types don't specify dtype. This is intentional as they mirror ComfyUI's
+        # model-specific empty latent image nodes.
+        match ltype:
+            case "default":
+                return io.NodeOutput({
+                    "samples": torch.zeros((batch_size, 4, height // 8, width // 8), device=intermediate_device(), dtype=intermediate_dtype()),  # type: ignore
+                    "downscale_ratio_spacial": 8,
+                })
+            case "sd3":
+                return io.NodeOutput({
+                    "samples": torch.zeros((batch_size, 16, height // 8, width // 8), device=intermediate_device(), dtype=intermediate_dtype()),  # type: ignore
+                })
+            case "chroma_radiance":
+                return io.NodeOutput({
+                    "samples": torch.zeros((batch_size, 3, height, width), device=intermediate_device()),
+                })
+            case "hunyuan_image":
+                return io.NodeOutput({
+                    "samples": torch.zeros((batch_size, 64, height // 32, width // 32), device=intermediate_device()),  # type: ignore
+                })
+            case "flux2":
+                return io.NodeOutput({
+                    "samples": torch.zeros((batch_size, 128, height // 16, width // 16), device=intermediate_device()),  # type: ignore
+                })
+            case "hidream_o1":
+                return io.NodeOutput({
+                    "samples": torch.zeros((batch_size, 3, height, width), device=intermediate_device()),
+                })
+            case _:
+                raise ValueError(f"Unknown latent type '{ltype}'")
