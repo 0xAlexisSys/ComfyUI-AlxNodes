@@ -10,7 +10,7 @@ class DropAlpha(io.ComfyNode):
             node_id="DropAlpha",
             display_name="Drop Alpha",
             category="AlxNodes/image",
-            description="Strips the alpha channel from an input image and outputs the RGB image.",
+            description="Strips the alpha channel from a RGBA image and outputs the RGB image.",
             search_aliases=[
                 "alpha",
                 "rgb",
