@@ -28,7 +28,7 @@ class DropAlpha(io.ComfyNode):
     @classmethod
     def execute(cls, image: torch.Tensor) -> io.NodeOutput:
         if image.dim() != 4 or image.shape[-1] < 4:
-            return image
+            return io.NodeOutput(image)
 
         # Keep R, G, B (and any channel before a trailing alpha); drop the tail.
         final_image: torch.Tensor = image[..., :3].clone().to(torch.float32)
