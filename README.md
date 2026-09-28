@@ -38,6 +38,18 @@ by a model (e.g., Qwen-Image-2.1) to a node like RTX Video Super Resolution, thi
 Same as the Empty Latent Image node, but with quality-of-life additions. `width` and `height` are exposed if `preset` is
 set to `custom`.
 
+### Normalize Alpha
+
+|        |                              |
+|--------|------------------------------|
+| Input  | `image` - Image              |
+| Input  | `threshold_black` - Float    |
+| Input  | `threshold_white` - Float    |
+| Input  | `fix_alpha_colors` - Boolean |
+| Output | `IMAGE` - Image              |
+
+Binarizes the alpha channel of a RGBA image. Useful for eliminating transparent diffusion noise in RGBA image outputs.
+
 ### Wildcard Text
 
 |        |                   |
