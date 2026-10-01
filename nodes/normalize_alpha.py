@@ -16,6 +16,7 @@ class NormalizeAlpha(io.ComfyNode):
                 "rgb",
                 "rgba",
                 "clean alpha",
+                "normalise alpha",
                 "binarize alpha",
                 "binarise alpha",
             ],
