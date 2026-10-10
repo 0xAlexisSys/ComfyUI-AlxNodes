@@ -7,6 +7,7 @@ class AlxNodesExtension(ComfyExtension):
     @override
     async def get_node_list(self) -> list[type[io.ComfyNode]]:
         return [
+            ClipTextEncodePosNeg,
             DropAlpha,
             EmptyLatentImageQoL,
             NormalizeAlpha,

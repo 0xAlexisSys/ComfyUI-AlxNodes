@@ -13,6 +13,19 @@ Then start ComfyUI.
 
 ## Nodes
 
+### CLIP Text Encode (Positive/Negative)
+
+|        |                           |
+|--------|---------------------------|
+| Input  | `clip` - CLIP             |
+| Input  | `positive_text` - String  |
+| Input  | `negative_text` - String  |
+| Output | `POSITIVE` - Conditioning |
+| Output | `NEGATIVE` - Conditioning |
+
+Encodes a positive text prompt and negative text prompt using a CLIP model. Works the same as the CLIP Text Encode
+(Prompt) core node.
+
 ### Drop Alpha
 
 |        |                 |
