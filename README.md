@@ -48,8 +48,8 @@ by a model (e.g., Qwen-Image-2.1) to a node like RTX Video Super Resolution, thi
 | Input  | `batch_size` - Integer      |
 | Output | `LATENT` - Latent           |
 
-Same as the Empty Latent Image node, but with quality-of-life additions. `width` and `height` are exposed if `preset` is
-set to `custom`.
+Creates a batch of empty latent images. `type` mirrors model-specific Empty Latent Image core nodes, potentially
+reducing the amount of tinkering. `width` and `height` are exposed if `preset` is set to `custom`.
 
 ### Normalize Alpha
 

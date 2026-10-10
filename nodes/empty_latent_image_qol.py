@@ -50,7 +50,7 @@ class EmptyLatentImageQoL(io.ComfyNode):
             node_id="EmptyLatentImageQoL",
             display_name="Empty Latent Image QoL",
             category="AlxNodes/latent",
-            description="Same as the Empty Latent Image node, but with quality-of-life additions.",
+            description="Creates a batch of empty latent images.",
             search_aliases=[
                 "empty",
                 "empty latent",
